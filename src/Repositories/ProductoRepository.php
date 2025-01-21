@@ -39,6 +39,7 @@ class ProductoRepository
             if(isset($insert)){
                 $insert->closeCursor();
             }
+            unset($insert);
         }
     }
 
@@ -65,6 +66,7 @@ class ProductoRepository
             if(isset($consulta)){
                 $consulta->closeCursor();
             }
+            unset($consulta);
         }
     }
 
@@ -88,15 +90,15 @@ class ProductoRepository
             if(isset($consulta)){
                 $consulta->closeCursor();
             }
+            unset($consulta);
         }
     }
 
     public function editarProducto(Producto $producto):bool{
         try{
-            $update = $this->db->prepare('UPDATE productos SET
+            $update = $this->db->prepare('UPDATE productos SET 
             nombre=:nombre, descripcion=:descripcion, precio=:precio, stock=:stock, 
             oferta=:oferta, imagen=:imagen, fecha=:fecha WHERE id = :id');
-
 
             $update->bindValue(':nombre', $producto->getNombre());
             $update->bindValue(':descripcion', $producto->getDescripcion());
@@ -111,13 +113,13 @@ class ProductoRepository
             return true;
 
         }catch(PDOException $e){
-            die("Error al actualizar el producto: ".$e->getMessage());
             error_log("Error al consultar el producto: ".$e->getMessage());
             return false;
         }finally{
             if(isset($update)){
                 $update->closeCursor();
             }
+            unset($update);
         }
     }
 
@@ -137,6 +139,7 @@ class ProductoRepository
             if(isset($delete)){
                 $delete->closeCursor();
             }
+            unset($delete);
         }
     }
 }

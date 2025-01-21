@@ -1,9 +1,38 @@
+/* Estilos Generales */
 body {
     font-family: Arial, sans-serif;
+    color: #333;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    background-color: #f4f7fc;
 }
+
+h1 {
+    text-align: center;
+    font-size: 32px;
+    color: #333;
+    margin-top: 20px;
+}
+
+h3 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Estilos Contenedor Principal */
+.container {
+    width: 100%;
+    max-width: 600px;
+    margin: 50px auto;
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para los Productos */
 .productos-container {
     display: flex;
     flex-wrap: wrap;
@@ -11,23 +40,29 @@ body {
     gap: 20px;
     padding: 20px;
 }
+
 .producto {
-    width: calc(25% - 20px); /* Ajusta al 25% menos el espacio entre los productos */
+    width: calc(25% - 20px); /* 4 productos por fila en pantallas grandes */
     border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     text-align: center;
-    padding: 10px;
+    padding: 15px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    background-color: #fff; /* Fondo blanco para diferenciar el producto */
 }
+
 .producto h3 {
-    font-size: 1.5rem;
-    margin: 10px 0;
+    font-size: 1.6rem;
+    margin: 15px 0;
+    color: #333;
+    font-weight: 600;
 }
+
 .imagen-container {
     width: 100%;
     max-height: 300px;
@@ -35,44 +70,187 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 10px;
-    border-radius: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    background-color: #f7f7f7; /* Fondo sutil para la imagen */
 }
+
 .imagen-container img {
     width: 100%;
     height: auto;
     object-fit: contain;
-    border-radius: 5px;
+    border-radius: 8px;
 }
+
 .producto p {
-    margin: 5px 0;
-    font-size: 0.9rem;
+    margin: 8px 0;
+    font-size: 1rem;
+    color: #666;
 }
+
 .producto button {
-    margin-top: 10px;
-    padding: 8px 15px;
+    margin-top: 15px;
+    padding: 10px 20px;
     background-color: #007BFF;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
 }
+
 .producto button:hover {
     background-color: #0056b3;
 }
 
-/* Estilos responsivos */
+/* Estilos del Formulario */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="password"] {
+    font-size: 16px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="password"]:focus {
+    border-color: #0066cc;
+    outline: none;
+}
+
+input[type="submit"] {
+    font-size: 16px;
+    padding: 12px;
+    background-color: #0066cc;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #005bb5;
+}
+
+/* Estilos para los Mensajes de Error */
+div.error {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+div.error ul {
+    padding-left: 20px;
+}
+
+div.error ul li {
+    list-style-type: disc;
+}
+
+/* Estilos para campos con error */
+input[type="text"].error,
+input[type="number"].error,
+input[type="password"].error {
+    border-color: red;
+}
+
+/* Estilos para el Menú de Navegación */
+nav {
+    background-color: #f1f1f1;
+    padding: 10px 20px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Agregado sombra para el nav */
+}
+
+nav h2 {
+    font-size: 18px;
+    color: #333;
+    margin: 10px 0;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+}
+
+nav ul li {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    font-size: 16px;
+    color: #333;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+nav ul li a:hover {
+    background-color: #e0e0e0;
+}
+
+/* Estilos para enlaces activos */
+nav ul li a.active {
+    background-color: #ccc;
+}
+
+/* Responsividad para dispositivos móviles */
 @media (max-width: 1200px) {
     .producto {
         width: calc(33.33% - 20px); /* 3 productos por fila */
     }
 }
+
 @media (max-width: 768px) {
     .producto {
         width: calc(50% - 20px); /* 2 productos por fila */
     }
+
+    .container {
+        padding: 15px;
+    }
+
+    h3 {
+        font-size: 20px;
+    }
+
+    nav ul {
+        display: block;
+        text-align: left;
+    }
+
+    nav ul li {
+        margin: 10px 0;
+    }
+
+    nav ul li a {
+        font-size: 14px;
+        padding: 10px;
+        display: block;
+    }
 }
+
 @media (max-width: 480px) {
     .producto {
         width: calc(100% - 20px); /* 1 producto por fila */

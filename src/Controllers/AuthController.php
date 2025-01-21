@@ -15,6 +15,9 @@ class AuthController
     private UserService $service;
     private ProductoService $productoService;
 
+    /**
+     * Constructor para crear instancias de Pages UserService y ProductoService
+     */
     public function __construct()
     {
         $this->pages = new Pages();

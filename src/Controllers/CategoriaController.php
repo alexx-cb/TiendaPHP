@@ -16,6 +16,9 @@ class CategoriaController
     private CategoriaService $service;
     private ProductoService $productoService;
 
+    /**
+     * Constuctor para instanciar Pages, CategoriaServices, ProductoService y ErrorController
+     */
     public function __construct(){
         $this->pages = new Pages();
         $this->service = new CategoriaService();
@@ -23,15 +26,22 @@ class CategoriaController
         $this->errorController = new ErrorController();
     }
 
-    public function newCategoria(): void
-    {
+    /**
+     * Método para crear nuevas categorias
+     * @return void
+     */
+    public function newCategoria(): void{
+        // Si no es admin muestra la pantalla de error
         if ($_SESSION['rol'] === 'admin') {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (isset($_POST['data']) && !empty($_POST['data']['nombre'])) {
+                    // Creamos un objeto categoria
                     $categoria = Categoria::fromArray($_POST['data']);
 
+                    // Validamos
                     if ($categoria->validator()) {
                         try {
+                            // Creamos la categoria y mostramos de nuevo los productos
                             $this->service->newCategoria($categoria->getNombre());
                             $productos = $this->productoService->showProductos();
                             $this->pages->render('Productos/showProductos', ['productos' => $productos]);

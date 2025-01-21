@@ -1,3 +1,6 @@
+<div class="container">
+
+
 <h2>Formulario de Pedido</h2>
 
 <?php
@@ -62,3 +65,4 @@ $horaActual = date('H:i');
 <?php
 unset($_SESSION['errors']);
 ?>
+</div>

@@ -1,44 +1,49 @@
-<h3>Formulario de Registro</h3>
+<div class="container">
+    <h3>Formulario de Registro</h3>
 
-<?php if (isset($_SESSION['errors']) && !empty($_SESSION['errors'])): ?>
-    <div style="color: red; margin-bottom: 10px;">
-        <ul>
-            <?php foreach ($_SESSION['errors'] as $error): ?>
-                <li><?php echo htmlspecialchars($error); ?></li>
-            <?php endforeach; ?>
-        </ul>
-    </div>
-    <?php unset($_SESSION['errors']);?>
-<?php endif; ?>
+    <form action="<?= BASE_URL ?>Auth/register" method="POST">
 
-<form action="<?= BASE_URL ?>Auth/register" method="POST">
-    <label for="nombre">Nombre</label>
-    <input type="text" name="data[nombre]" id="nombre" value="<?= isset($userData['nombre']) ? htmlspecialchars($userData['nombre']) : '' ?>">
-    <?php if (isset($errors['nombre'])): ?>
-        <div style="color: red;"><?= $errors['nombre']; ?></div>
-    <?php endif; ?>
-    <br><br>
+        <!-- Campo Nombre -->
+        <label for="nombre">Nombre</label>
+        <input type="text" name="data[nombre]" id="nombre" value="<?= isset($_SESSION['userData']['nombre']) ?
+            htmlspecialchars($_SESSION['userData']['nombre']) : '' ?>"
+               class="<?= isset($_SESSION['errors']['nombre']) ? 'error' : '' ?>">
 
-    <label for="apellidos">Apellidos</label>
-    <input type="text" name="data[apellidos]" id="apellidos" value="<?= isset($userData['apellidos']) ? htmlspecialchars($userData['apellidos']) : '' ?>">
-    <?php if (isset($errors['apellidos'])): ?>
-        <div style="color: red;"><?= $errors['apellidos']; ?></div>
-    <?php endif; ?>
-    <br><br>
+        <?php if (isset($_SESSION['errors']['nombre'])): ?>
+            <div class="error"><?= $_SESSION['errors']['nombre']; ?></div>
+        <?php endif; ?>
 
-    <label for="email">Email</label>
-    <input type="text" name="data[email]" id="email" value="<?= isset($userData['email']) ? htmlspecialchars($userData['email']) : '' ?>">
-    <?php if (isset($errors['email'])): ?>
-        <div style="color: red;"><?= $errors['email']; ?></div>
-    <?php endif; ?>
-    <br><br>
+        <!-- Campo Apellidos -->
+        <label for="apellidos">Apellidos</label>
+        <input type="text" name="data[apellido]" id="apellidos" value="<?= isset($_SESSION['userData']['apellido']) ?
+            htmlspecialchars($_SESSION['userData']['apellido']) : '' ?>"
+               class="<?= isset($_SESSION['errors']['apellido']) ? 'error' : '' ?>">
 
-    <label for="pass">Contraseña</label>
-    <input type="password" name="data[password]" id="pass">
-    <?php if (isset($errors['password'])): ?>
-        <div style="color: red;"><?= $errors['password']; ?></div>
-    <?php endif; ?>
-    <br><br>
+        <?php if (isset($_SESSION['errors']['apellido'])): ?>
+            <div class="error"><?= $_SESSION['errors']['apellido']; ?></div>
+        <?php endif; ?>
 
-    <input type="submit" value="Registrarse">
-</form>
+        <!-- Campo Email -->
+        <label for="email">Email</label>
+        <input type="text" name="data[email]" id="email" value="<?= isset($_SESSION['userData']['email']) ?
+            htmlspecialchars($_SESSION['userData']['email']) : '' ?>"
+               class="<?= isset($_SESSION['errors']['email']) ? 'error' : '' ?>">
+
+        <?php if (isset($_SESSION['errors']['email'])): ?>
+            <div class="error"><?= $_SESSION['errors']['email']; ?></div>
+        <?php endif; ?>
+
+        <!-- Campo Contraseña -->
+        <label for="pass">Contraseña</label>
+        <input type="password" name="data[password]" id="pass" class="<?= isset($_SESSION['errors']['password']) ? 'error' : '' ?>">
+        <?php if (isset($_SESSION['errors']['password'])): ?>
+            <div class="error"><?= $_SESSION['errors']['password']; ?></div>
+        <?php endif; ?>
+
+        <!-- Botón de Envío -->
+        <input type="submit" value="Registrarse">
+    </form>
+</div>
+<?php
+unset($_SESSION['errors']);
+?>

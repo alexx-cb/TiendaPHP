@@ -1,3 +1,4 @@
+<div class="container">
 <h2>Crear una Categoria</h2>
 
 <form action="<?= BASE_URL ?>Categorias/newCategoria" method="POST">
@@ -21,3 +22,4 @@ if (isset($_SESSION['errors']) && empty($_SESSION['errors'])) {
     unset($_SESSION['errors']);
 }
 ?>
+</div>

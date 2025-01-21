@@ -1,8 +1,9 @@
+<div class="container">
 <h1>Login</h1>
 
 <?php if (isset($_SESSION['errors']) && !empty($_SESSION['errors'])): ?>
     <div style="color: red; margin-bottom: 10px;">
-        <p><?= htmlspecialchars($_SESSION['errors']) ?></p>
+        <p><?= $_SESSION['errors'] ?></p>
     </div>
     <?php unset($_SESSION['errors']); ?>
 <?php endif; ?>
@@ -24,3 +25,8 @@
 
     <input type="submit" value="Iniciar Sesion">
 </form>
+</div>
+
+<?php
+unset($_SESSION['errors']);
+?>

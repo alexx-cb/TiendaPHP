@@ -13,7 +13,7 @@ class Producto
         private int|null $categoria_id,
         private string $nombre,
         private string $descripcion,
-        private string $precio,
+        private int $precio,
         private int|null $stock,
         private int|null $oferta,
         private string $fecha,
@@ -28,10 +28,10 @@ class Producto
     public static function fromArray(array $data): Producto{
         return new Producto(
             $data['id'] ?? null,
-            $data['categoria_id']??null,
+            $data['categoria_id'] ??null,
             $data['nombre'] ?? '',
             $data['descripcion'] ?? '',
-            $data['precio'] ?? '',
+            $data['precio'],
             $data['stock']??null,
             $data['oferta']??null,
             $data['fecha'] ?? '',
@@ -66,37 +66,46 @@ class Producto
         $this->imagen = filter_var(trim($this->imagen), FILTER_SANITIZE_URL);
     }
 
-    public function validator():array{
+    /**
+     * Validar los datos del producto
+     */
+    public function validator(): array
+    {
         self::$errors = [];
-
         $this->sanitize();
 
-        if (empty($this->id)){
-            self::$errors[] = "El id es requerido";
+        if ($this->categoria_id|null) {
+            self::$errors['categoria_id'] = "La categoría es requerida";
         }
-        if (empty($this->categoria_id)){
-            self::$errors[] = "La categoria es requerido";
+        if (empty($this->nombre)) {
+            self::$errors['nombre'] = "El nombre es requerido";
         }
-        if (empty($this->nombre)){
-            self::$errors[] = "El nombre es requerido";
+        if (empty($this->descripcion)) {
+            self::$errors['descripcion'] = "La descripción es requerida";
         }
-        if (empty($this->descripcion)){
-            self::$errors[] = "La descripcion es requerido";
+        if (empty($this->precio)) {
+            self::$errors['precio'] = "El precio es requerido";
         }
-        if (empty($this->precio)){
-            self::$errors[] = "El precio es requerido";
+        if($this->precio<=0){
+            self::$errors['precio'] = "El precio no puede ser menor o igual a 0";
         }
-        if (empty($this->stock)){
-            self::$errors[] = "El stock es requerido";
+        if (empty($this->stock)) {
+            self::$errors['stock'] = "El stock es requerido";
         }
-        if (empty($this->oferta)){
-            self::$errors[] = "La oferta es requerido";
+        if($this->stock<=0){
+            self::$errors['stock'] = "El stock no puede ser menor o igual a 0";
         }
-        if (empty($this->fecha)){
-            self::$errors[] = "La fecha es requerido";
+        if (empty($this->oferta)) {
+            self::$errors['oferta'] = "La oferta es requerida";
         }
-        if (empty($this->imagen)){
-            self::$errors[] = "La imagen es requerido";
+        if($this->oferta<0){
+            self::$errors['oferta'] = "La oferta no puede ser menor a 0";
+        }
+        if (empty($this->fecha)) {
+            self::$errors['fecha'] = "La fecha es requerida";
+        }
+        if (empty($this->imagen)) {
+            self::$errors['imagen'] = "La imagen es requerida";
         }
         return self::$errors;
     }

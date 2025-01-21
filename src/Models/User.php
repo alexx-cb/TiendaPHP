@@ -20,7 +20,7 @@ class User
         return new User(
             $data['id'] ?? null,
             $data['nombre'] ?? '',
-            $data['apellidos'] ?? '',
+            $data['apellido'] ?? '',
             $data['email'] ?? '',
             $data['password'] ?? '',
             $data['rol'] ?? 'usuario'
@@ -34,16 +34,16 @@ class User
         $this->sanitize();
 
         if(empty($this->name)){
-            self::$errors[] = "El nombre es requerido";
+            self::$errors['nombre'] = "El nombre es requerido";
         }
         if(empty($this->surname)){
-            self::$errors[] = "El apellido es requerido";
+            self::$errors['apellido'] = "El apellido es requerido";
         }
         if(empty($this->email) || !filter_var($this->email, FILTER_VALIDATE_EMAIL)){
-            self::$errors[] = "El email es inválido o está vacío";
+            self::$errors['email'] = "El email es inválido o está vacío";
         }
         if(empty($this->pass)){
-            self::$errors[] = "La contraseña es requerida";
+            self::$errors['password'] = "La contraseña es requerida";
         }
 
         return empty(self::$errors);

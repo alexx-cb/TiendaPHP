@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Document</title>
-    <link rel="stylesheet" href="<?=BASE_URL?>">
+    <link rel="stylesheet" href="<?=BASE_URL?>public/css/header.css">
 </head>
 <body>
 
@@ -32,8 +32,9 @@
             <li><a href="<?=BASE_URL?>Productos/newProducto">Crear Producto</a></li>
             <li><a href="<?=BASE_URL?>Categorias/newCategoria">Crear Categoria</a></li>
 
-            </ul>
+
         <?php endif; ?>
         <li><a href="<?=BASE_URL?>Auth/logout">Cerrar Sesion</a></li>
+        </ul>
     </nav>
         <?php endif; ?>
