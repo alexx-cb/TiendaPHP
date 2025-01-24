@@ -26,7 +26,7 @@ class Router {
         $action = trim($action, '/');
 
         $param = null;
-        preg_match('/[0-9]+$/', $action, $match);
+        preg_match('/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/', $action, $match);
 
         if(!empty($match)){
 

@@ -14,18 +14,20 @@ use AllowDynamicProperties;
         private string $nombre,
     ){}
 
-    public function validator():array{
+    public function validator(): bool {
+        self::$errors = [];
 
         $this->sanitize();
 
         if (empty($this->nombre)) {
             self::$errors['nombre'] = "El nombre es requerido";
         }
-        return self::$errors;
+
+        return empty(self::$errors);
     }
 
     public function sanitize():void{
-        $this->name = filter_var(trim($this->nombre), FILTER_SANITIZE_STRING);
+        $this->nombre = filter_var(trim($this->nombre), FILTER_SANITIZE_STRING);
     }
 
     public static function fromArray(array $data):Categoria{

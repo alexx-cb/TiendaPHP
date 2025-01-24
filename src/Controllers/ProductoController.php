@@ -33,6 +33,7 @@ class ProductoController
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (isset($_POST['data']) && !empty($_POST['data'])) {
 
+
                     // Creamos un objeto Producto con los datos del POST
                     $producto = Producto::fromArray($_POST['data']);
                     $errors = $producto->validator();
@@ -108,7 +109,7 @@ class ProductoController
                 $productoData = $_POST['data'];
                 $producto = Producto::fromArray($productoData);
 
-                if (empty($producto->validator())) {
+                if ($producto->validator()) {
                     try {
                         $this->service->editarProducto($producto);
 

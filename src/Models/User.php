@@ -16,6 +16,18 @@ class User
     ){
     }
 
+    public function toArray(): array
+    {
+        return [
+          'id' => $this->id,
+          'name' => $this->name,
+          'surname' => $this->surname,
+          'email' => $this->email,
+          'pass' => $this->pass,
+          'rol' => $this->rol
+        ];
+    }
+
     public static function fromArray(array $data): User{
         return new User(
             $data['id'] ?? null,

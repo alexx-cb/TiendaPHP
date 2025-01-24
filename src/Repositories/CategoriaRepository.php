@@ -21,6 +21,7 @@ class CategoriaRepository
             return true;
 
         }catch (PDOException $e){
+
             error_log("Error al crear el producto: ".$e->getMessage());
             return false;
         }finally{

@@ -35,11 +35,14 @@ class CategoriaController
         if ($_SESSION['rol'] === 'admin') {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (isset($_POST['data']) && !empty($_POST['data']['nombre'])) {
-                    // Creamos un objeto categoria
                     $categoria = Categoria::fromArray($_POST['data']);
 
-                    // Validamos
-                    if ($categoria->validator()) {
+                    if (!$categoria->validator()) {
+                        $_SESSION['errors'] = Categoria::getErrors();
+                        $_SESSION['register'] = 'fail';
+                        $this->pages->render('Categorias/newCategoria');
+                        return; // Detén la ejecución aquí
+                    }
                         try {
                             // Creamos la categoria y mostramos de nuevo los productos
                             $this->service->newCategoria($categoria->getNombre());
@@ -49,10 +52,7 @@ class CategoriaController
                             $_SESSION['errors'] = $e->getMessage();
                             $_SESSION['register'] = 'fail';
                         }
-                    } else {
-                        $_SESSION['errors'] = Categoria::getErrors();
-                        $_SESSION['register'] = 'fail';
-                    }
+
                 } else {
                     $_SESSION['errors'] = ['nombre' => 'El nombre es requerido.'];
                     $_SESSION['register'] = 'fail';

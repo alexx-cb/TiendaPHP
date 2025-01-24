@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Lib\Pages;
+use Lib\Security;
 use Models\User;
 use Services\UserService;
 use Services\ProductoService;
@@ -39,9 +40,12 @@ class AuthController
                     $pass = password_hash($user->getPass(), PASSWORD_BCRYPT, ['cost' => 5]);
                     $user->setPass($pass);
 
+
+
                     // registramos el usuario o mostramos errores
                     try {
                         $this->service->registerUser($user);
+
                     } catch (Exception $e) {
                         $_SESSION['register'] = 'Fail to create user';
                         $_SESSION['errors'] = $e->getMessage();

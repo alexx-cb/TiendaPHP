@@ -74,7 +74,7 @@ class Producto
         self::$errors = [];
         $this->sanitize();
 
-        if ($this->categoria_id|null) {
+        if (empty($this->categoria_id|null)) {
             self::$errors['categoria_id'] = "La categoría es requerida";
         }
         if (empty($this->nombre)) {
