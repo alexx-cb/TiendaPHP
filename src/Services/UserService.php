@@ -27,4 +27,8 @@ class UserService
     public function getUserById(int $id){
         return $this->userRepository->getUserById($id);
     }
+
+    public function actualizarRegistro(User $user):bool{
+       return $this->userRepository->actualizarRegistro($user);
+    }
 }

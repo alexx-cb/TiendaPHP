@@ -8,6 +8,7 @@ use Controllers\PedidosController;
 use Controllers\ProductoController;
 use Controllers\CarritoController;
 use Lib\Router;
+use Lib\Security;
 
 class Routes
 {
@@ -71,6 +72,11 @@ class Routes
         Router::add('GET','Pedido/registrarPedido',function(){
             (new PedidosController())->registrarPedido();
         });
+
+        Router::add('GET', 'Auth/confirmar-cuenta/:token', function($token){
+            (new AuthController())->confirmarCuenta($token);
+        });
+
 
         /* ROUTES POR POST*/
 

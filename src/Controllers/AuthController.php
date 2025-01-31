@@ -5,6 +5,7 @@ namespace Controllers;
 use Lib\Pages;
 use Lib\Security;
 use Models\User;
+use Lib\Mailer;
 use Services\UserService;
 use Services\ProductoService;
 use Exception;
@@ -16,6 +17,10 @@ class AuthController
     private UserService $service;
     private ProductoService $productoService;
 
+    private Security $security;
+
+    private Mailer $mailer;
+
     /**
      * Constructor para crear instancias de Pages UserService y ProductoService
      */
@@ -24,6 +29,8 @@ class AuthController
         $this->pages = new Pages();
         $this->service = new UserService();
         $this->productoService = new ProductoService();
+        $this->mailer = new Mailer();
+        $this->security = new Security();
     }
 
     /**
@@ -40,11 +47,30 @@ class AuthController
                     $pass = password_hash($user->getPass(), PASSWORD_BCRYPT, ['cost' => 5]);
                     $user->setPass($pass);
 
-
-
                     // registramos el usuario o mostramos errores
                     try {
                         $this->service->registerUser($user);
+
+                        try{
+                            $usuario = $this->service->getUserByEmail($user->getEmail());
+
+                            $tokenData = Security::createToken(Security::secretKey(), [
+                                'id' => $usuario->getId(),
+                                'email' => $usuario->getEmail()
+                            ]);
+
+                            $token = $tokenData['token'];
+                            $expiration = date('Y-m-d H:i:s', $tokenData['expiration']);
+
+                            $usuario->setToken($token);
+                            $usuario->setExpToken($expiration);
+
+                            $this->service->actualizarRegistro($usuario);
+
+                            $this->mailer->emailToken($usuario, $token);
+                        }catch (Exception $e){
+                            echo $e->getMessage();
+                        }
 
                     } catch (Exception $e) {
                         $_SESSION['register'] = 'Fail to create user';
@@ -106,6 +132,11 @@ class AuthController
                         return;
                     }
 
+                    if(!$usuario->isConfirmado()){
+                        $_SESSION['errors'] = "No se ha confirmado el correo";
+                        return;
+                    }
+
                     // Verificamos la contraseña
                     if (password_verify($pass, $usuario->getPass())) {
 
@@ -137,6 +168,32 @@ class AuthController
             $this->pages->render('user/login');
         }
     }
+
+
+    public function confirmarCuenta($token):void{
+        if (isset($token)) {
+            try {
+                if (Security::validateToken($token)) {
+
+                    $_SESSION['mensaje'] = 'Cuenta confirmada con éxito';
+                    $this->pages->render('user/login');
+                } else {
+
+                    $_SESSION['mensaje'] = 'Token inválido o expirado';
+                    $this->pages->render('user/form');
+                }
+            } catch (Exception $e) {
+                $_SESSION['mensaje'] = 'Error al confirmar la cuenta';
+                echo $e->getMessage();
+            }
+        } else {
+
+            $_SESSION['mensaje'] = 'Token no proporcionado';
+            $this->pages->render('user/form');
+        }
+    }
+
+
 
     /**
      * Método para cerrar sesion

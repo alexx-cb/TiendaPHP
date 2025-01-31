@@ -12,19 +12,25 @@ class User
         private string $surname,
         private string $email,
         private string $pass,
-        private string $rol
+        private string $rol,
+        private bool $confirmado,
+        private string $token,
+        private string $exp_token
     ){
     }
 
     public function toArray(): array
     {
         return [
-          'id' => $this->id,
-          'name' => $this->name,
-          'surname' => $this->surname,
-          'email' => $this->email,
-          'pass' => $this->pass,
-          'rol' => $this->rol
+            'id' => $this->id,
+            'name' => $this->name,
+            'surname' => $this->surname,
+            'email' => $this->email,
+            'pass' => $this->pass,
+            'rol' => $this->rol,
+            'confirmado' => $this->confirmado,
+            'token' => $this->token,
+            'exp_token' => $this->exp_token,
         ];
     }
 
@@ -35,7 +41,10 @@ class User
             $data['apellido'] ?? '',
             $data['email'] ?? '',
             $data['password'] ?? '',
-            $data['rol'] ?? 'usuario'
+            $data['rol'] ?? 'usuario',
+            $data['confirmado'] ?? false,
+            $data['token'] ?? '',
+            $data['exp_token'] ?? ''
         );
     }
 
@@ -68,6 +77,56 @@ class User
         $this->email = filter_var(trim($this->email), FILTER_SANITIZE_EMAIL);
         $this->pass = filter_var(trim($this->pass), FILTER_SANITIZE_STRING);
     }
+
+    /**
+     * @return bool
+     */
+    public function isConfirmado(): bool
+    {
+        return $this->confirmado;
+    }
+
+    /**
+     * @param bool $confirmado
+     */
+    public function setConfirmado(bool $confirmado): void
+    {
+        $this->confirmado = $confirmado;
+    }
+
+    /**
+     * @return string
+     */
+    public function getToken(): string
+    {
+        return $this->token;
+    }
+
+    /**
+     * @param string $token
+     */
+    public function setToken(string $token): void
+    {
+        $this->token = $token;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExpToken(): string
+    {
+        return $this->exp_token;
+    }
+
+    /**
+     * @param string $exp_token
+     */
+    public function setExpToken(string $exp_token): void
+    {
+        $this->exp_token = $exp_token;
+    }
+
+
 
     public function getId(): int{
         return $this->id;

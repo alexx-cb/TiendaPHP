@@ -19,28 +19,22 @@ class Router {
     // usando call_user_func()
     public static function dispatch():void {
         $method = $_SERVER['REQUEST_METHOD'];
-        //print_r($_SERVER);die($method);
-
         $action = preg_replace('/Tienda/','',$_SERVER['REQUEST_URI']);
-        //$_SERVER['REQUEST_URI'] almacena la cadena de texto que hay después del nombre del host en la URL
         $action = trim($action, '/');
 
+        $parts = explode('/', $action);
         $param = null;
-        preg_match('/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/', $action, $match);
 
-        if(!empty($match)){
-
-            $param = $match[0];
-            $action=preg_replace('/'.$match[0].'/',':id',$action);//quitamos la primera parte que se repite siempre (clinicarouter)
+        if (count($parts) > 2 && $parts[0] == 'Auth' && $parts[1] == 'confirmar-cuenta') {
+            $param = $parts[2];
+            $action = $parts[0] . '/' . $parts[1] . '/:token';
         }
 
         $fn = self::$routes[$method][$action] ?? null;
 
         if($fn){
-
             $callback = self::$routes[$method][$action];
             echo call_user_func($callback, $param);
-
         }else{
             ErrorController::error404();
         }

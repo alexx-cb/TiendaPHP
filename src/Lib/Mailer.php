@@ -3,19 +3,66 @@
 namespace Lib;
 
 
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
 use Models\Pedidos;
+use Models\User;
 use Services\UserService;
+use Lib\Security;
 
 class Mailer
 {
 
     private UserService $userService;
 
+
     public function __construct(){
         $this->userService = new UserService();
+
+    }
+
+    public function emailToken(User $usuario, string $token):void{
+        try{
+
+            $usuarioEmail = $usuario->getEmail();
+            $usuarioNombre = $usuario->getNombre();
+            $usuarioApellido = $usuario->getApellido();
+
+
+
+            $mail = new PHPMailer(true);
+            $mail->isSMTP();
+            $mail->Host = $_ENV['MAILHOST'];
+            $mail->SMTPAuth = true;
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port = 587;
+            $mail->Username = $_ENV['USERMAIL'];
+            $mail->Password = $_ENV['MAILPASSWORD'];
+
+            $mail->setFrom($_ENV['USERMAIL'], $_ENV['MAILNAME']. ' '. $_ENV['MAILSURNAME']);
+            $mail->addReplyTo($_ENV['USERMAIL'], $_ENV['MAILNAME']. ' '. $_ENV['MAILSURNAME']);
+
+            $mail->addAddress($usuarioEmail, $usuarioNombre . ' ' . $usuarioApellido);
+
+            $mail->isHTML(true);
+
+            $mail->Subject = " Confirmacion de Cuenta";
+            $mail->AltBody = " Confirmacion de Cuenta";
+
+
+            $contenido = "<h1>Confirmacion de Cuenta</h1>";
+            $contenido .= "<p>Para confirmar su cuenta pulse el siguiente enlace</p>";
+            $contenido .= "<a href='" . BASE_URL . "Auth/confirmar-cuenta/{$token}'>Confirmar cuenta</a>";
+
+
+            $mail->Body = $contenido;
+            $mail->send();
+
+        }catch (Exception $e){
+            echo $e->getMessage();
+        }
     }
 
     public function enviarMail(Pedidos $pedido, array $lineasPedido):void{

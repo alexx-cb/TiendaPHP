@@ -43,25 +43,27 @@ class PedidosController
                 $productos = $_POST['productos'];
 
                 if(empty($productos)){
-                    die("No se han seleccionado productos válidos para realizar el pedido.");
+                    $_SESSION['errors'] = "no se han seleccionado ningun producto";
                 }
                 foreach($productos as $producto){
                     // por si los datos del producto respecto a la cantidad son inferiores a 0
                     if(!isset($producto['id'], $producto['cantidad']) || $producto['cantidad'] <= 0){
-                        die("Los datos del producto son inválidos.");
+                        $_SESSION['errors'] = "los datos del producto no son correctos";
                     }
                     // Creamos un objeto de tipo Producto
                     $productoInfo = $this->productoService->buscarPorId($producto['id']);
                     if (!$productoInfo){
-                        die("Producto con ID {$producto['id']} no encontrado.");
+                        $_SESSION['errors'] = "no se ha encontrado el producto";
                     }
                 }
                 $this->pages->render('Pedidos/hacerPedido', ['productos' => $productos]);
             } else{
-                die("No se han enviado productos para el pedido.");
+                $_SESSION['errors'] = "no se han seleccionado ningun producto";
+                $this->pages->render('Carrito/verCarrito');
             }
         } else{
-            die("No se puede acceder a esta función de esta manera.");
+            $_SESSION['errors'] = "no se puede acceder directamente";
+            $this->pages->render('Carrito/verCarrito');
         }
     }
 

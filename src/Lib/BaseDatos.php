@@ -26,7 +26,7 @@ class BaseDatos
         $this->conexion = $this->conectar();
     }
 
-    private function conectar(): PDO
+    private function conectar(): PDO | false
     {
         try {
             $opciones = [
@@ -40,7 +40,8 @@ class BaseDatos
                 $opciones
             );
         } catch (PDOException $e) {
-            die("Error al conectar con la base de datos: " . $e->getMessage());
+            $_SESSION['errors']=  $e->getMessage();
+            return false;
         }
     }
 
